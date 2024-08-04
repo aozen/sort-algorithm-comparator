@@ -1,0 +1,8 @@
+.nyc_output
+node_modules/
+.npm
+.eslintcache
+test/myCheck.js
+test/results.md
+test/runAlgorithm.js
+data.json

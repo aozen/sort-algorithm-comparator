@@ -19,4 +19,4 @@ const selectionsort = arr => {
 
   return arr
 }
-module.exports = selectionsort
+export default selectionsort

@@ -21,4 +21,4 @@ const quicksort = arr => {
   return quicksort(left).concat(equal).concat(quicksort(right))
 }
 
-module.exports = quicksort
+export default quicksort

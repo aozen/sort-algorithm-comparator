@@ -39,4 +39,4 @@ const heapsort = arr => {
   return arr
 }
 
-module.exports = heapsort
+export default heapsort

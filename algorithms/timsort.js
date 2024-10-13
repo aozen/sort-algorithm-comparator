@@ -69,4 +69,4 @@ const timsort = arr => {
   return arr
 }
 
-module.exports = timsort
+export default timsort

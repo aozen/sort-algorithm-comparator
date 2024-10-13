@@ -1,36 +1,46 @@
-import globals from 'globals'
-import pluginJs from '@eslint/js'
+import { FlatCompat } from '@eslint/eslintrc'
+import js from '@eslint/js'
+import importPlugin from 'eslint-plugin-import'
+import promisePlugin from 'eslint-plugin-promise'
+
+const compat = new FlatCompat({
+  // Parsing error: Unexpected token import - But its a syntax error
+  // import is a keyword in ES6, but it is not supported in Node.js (?)
+  // Leave it like that for now
+  baseDirectory: import.meta.url,
+  recommendedConfig: js.configs.recommended,
+})
 
 export default [
-  {files: ['**/*.js'], languageOptions: {sourceType: 'commonjs'}},
-  {languageOptions: { globals: globals.node }},
-  pluginJs.configs.recommended,
   {
-    'rules': {
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'module',
+      globals: {
+        es2021: true,
+        node: true,
+      },
+    },
+    plugins: {
+      import: importPlugin,
+      promise: promisePlugin,
+    },
+    rules: {
       'quotes': ['error', 'single'],
-      // we want to force semicolons
       'semi': ['error', 'never'],
-      // we use 2 spaces to indent our code
       'indent': ['error', 2],
-      // we want to avoid extraneous spaces
       'no-multi-spaces': ['error'],
       'prefer-const': ['error', {
         'destructuring': 'any',
-        'ignoreReadBeforeAssign': false
+        'ignoreReadBeforeAssign': false,
       }],
       'max-len': ['error', {
         'code': 80,
         'tabWidth': 2,
         'ignoreComments': true,
-        'ignoreTrailingComments': true,
-        'ignoreUrls': true,
-        'ignoreStrings': true,
-        'ignoreTemplateLiterals': true,
-        'ignoreRegExpLiterals': true
       }],
-      // new rules
-      'no-multiple-empty-lines': ['error', { 'max': 1, 'maxEOF': 0, 'maxBOF': 0 }],
-      'no-trailing-spaces': 'error'
-    }
-  }
+    },
+  },
+  ...compat.extends('plugin:import/recommended'),
+  ...compat.extends('plugin:promise/recommended'),
 ]

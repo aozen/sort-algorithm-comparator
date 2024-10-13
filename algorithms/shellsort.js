@@ -24,4 +24,4 @@ const shellsort = arr => {
   return arr
 }
 
-module.exports = shellsort
+export default shellsort

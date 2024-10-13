@@ -42,4 +42,4 @@ const mergesort = arr => {
   return merge(mergesort(left), mergesort(right))
 }
 
-module.exports = mergesort
+export default mergesort

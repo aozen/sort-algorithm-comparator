@@ -57,7 +57,11 @@ Array.prototype.sort = function (...args) {
 
   // Log the times with additional details
   if(logs) {
-    const defaultSortingLog = { method: 'Your Sorting Algorithm', time: originalSortTime }
+    const defaultSortingLog = {
+      method: 'Your Sorting Algorithm',
+      time: originalSortTime
+    }
+
     logTimes(defaultSortingLog, logs, stackInfo)
   }
 
@@ -137,7 +141,8 @@ const getStackInfo = () => {
   const stack = new Error().stack.split('\n')
   // We skip the first three lines to get to the user's call
   const caller = stack[3] || 'Unknown caller'
-  const match = caller.match(/at (.+?) \((.+?):(\d+):(\d+)\)/) || caller.match(/at (.+?):(\d+):(\d+)/)
+  const match = caller.match(/at (.+?) \((.+?):(\d+):(\d+)\)/) ||
+    caller.match(/at (.+?):(\d+):(\d+)/)
 
   if (match) {
     return {

@@ -72,4 +72,4 @@ const insertionSort = (arr, left, right) => {
   }
 }
 
-module.exports = pdqsort
+export default pdqsort

@@ -13,4 +13,4 @@ const insertionsort = arr => {
   return arr
 }
 
-module.exports = insertionsort
+export default insertionsort

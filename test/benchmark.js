@@ -1,17 +1,17 @@
-const fs = require('fs')
-const { performance } = require('perf_hooks')
+import fs from 'fs'
+import { performance } from 'perf_hooks'
 
 // Load sorting algorithms
-const timsort = require('../algorithms/timsort')
-const quicksort = require('../algorithms/quicksort')
-const mergesort = require('../algorithms/mergesort')
-const heapsort = require('../algorithms/heapsort')
-const shellsort = require('../algorithms/shellsort')
-const pdqsort = require('../algorithms/pdqsort')
-const jsDefaultSort = require('../algorithms/jsDefaultSort')
-// const insertionsort = require('../algorithms/insertionsort')
-// const bubblesort = require('../algorithms/bubblesort')
-// const selectionsort = require('../algorithms/selectionsort')
+import timsort from '../algorithms/timsort.js'
+import quicksort from '../algorithms/quicksort.js'
+import mergesort from '../algorithms/mergesort.js'
+import heapsort from '../algorithms/heapsort.js'
+import shellsort from '../algorithms/shellsort.js'
+import pdqsort from '../algorithms/pdqsort.js'
+import jsDefaultSort from '../algorithms/jsDefaultSort.js'
+// import insertionsort from '../algorithms/insertionsort.js'
+// import bubblesort from '../algorithms/bubblesort.js'
+// import selectionsort from '../algorithms/selectionsort.js'
 
 // List of sorting algorithms to test
 const algorithms = [
@@ -30,7 +30,7 @@ const algorithms = [
 // Read data from file
 const dataset = JSON.parse(fs.readFileSync('data.json', 'utf8'))
 
-const repetitions = 1 // Number of repetitions for each test
+const repetitions = 20 // Number of repetitions for each test
 
 // Function to measure the execution time of a sorting algorithm
 const measureExecutionTime = (sortFunction, array, expectedResult) => {
@@ -38,7 +38,7 @@ const measureExecutionTime = (sortFunction, array, expectedResult) => {
   const result = sortFunction([...array]) // Make a copy of the array to avoid side effects
   const endTime = performance.now()
   if (!compareArrays(result, expectedResult)) {
-    console.error(`Error: ${sortFunction.name} did not sort the array correctly`)
+    console.error(`Error:${sortFunction.name} did not sort the array correctly`)
   }
   return endTime - startTime
 }
@@ -58,7 +58,9 @@ const performPerformanceTest = (data) => {
   // Loop through each dataset length
   for (let i = 0; i < dataLength; i++) {
     const groupDataLength = Object.values(data)[0][i].length
-    console.log(`\nPerformance test for Dataset ${i + 1} (${groupDataLength} elements):`)
+    console.log(
+      `\nPerformance test for Dataset ${i + 1} (${groupDataLength} elements):`
+    )
 
     // Loop through each dataset type (ordered, mostlyOrdered, random) for the current length
     datasetTypes.forEach(datasetType => {
@@ -88,7 +90,8 @@ const performPerformanceTest = (data) => {
 
       // Determine the winner for this dataset
       const winner = Object.keys(results)
-        .reduce((prev, curr) => results[prev] < results[curr] ? prev : curr,
+        .reduce(
+          (prev, curr) => results[prev] < results[curr] ? prev : curr,
           Object.keys(results)[0]
         )
 
@@ -105,7 +108,7 @@ const performPerformanceTest = (data) => {
     })
 
     // Add separator line between different lengths
-    console.log('===============================================================')
+    console.log('=============================================================')
   }
 
   // Display overall summary after all datasets are processed

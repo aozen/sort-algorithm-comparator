@@ -11,4 +11,4 @@ const bubblesort = arr => {
   return arr
 }
 
-module.exports = bubblesort
+export default bubblesort

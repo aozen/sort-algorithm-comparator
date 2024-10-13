@@ -1,5 +1,4 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
 
 // Generate random data
 const generateRandomData = (size) => {
@@ -54,8 +53,6 @@ const generateDatasets = (sizes) => {
 const datasetSizes = [100, 1000, 5000, 10000, 50000, 100000]
 const datasets = generateDatasets(datasetSizes)
 
-// Write datasets to data.json in the root folder
-const outputPath = path.join(__dirname, '..', 'data.json')
-fs.writeFileSync(outputPath, JSON.stringify(datasets, null, 2), 'utf-8')
+fs.writeFileSync('data.json', JSON.stringify(datasets, null, 2), 'utf-8')
 
 console.log('Data generated successfully.')

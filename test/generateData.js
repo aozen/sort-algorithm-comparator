@@ -12,23 +12,21 @@ const generateRandomData = (size) => {
 // Generate ordered data
 function generateOrderedData(size) {
   const orderedData = []
+  let currentValue = randomNumber() * 10
   for (let i = 0; i < size; i++) {
-    orderedData.push(randomNumber())
+    currentValue += Math.random() * 10
+    orderedData.push(currentValue)
   }
-  orderedData.sort((a, b) => a - b)
   return orderedData
 }
 
-// Generate mostlyOrdered data
+// Generate mostly ordered data
 const generateMostlyOrderedData = (size) => {
-  const mostlyOrderedData = []
-  for (let i = 0; i < size; i++) {
-    mostlyOrderedData.push(randomNumber())
-  }
-  mostlyOrderedData.sort((a, b) => a - b)
-  for (let i = 0; i < size * 0.05; i++) {
-    const randomIndex = Math.floor(Math.random() * size)
-    mostlyOrderedData[randomIndex] = randomNumber()
+  const mostlyOrderedData = generateOrderedData(size)
+  for (let i = 0; i < size / 10; i++) {
+    const idx1 = Math.floor(Math.random() * size)
+    const idx2 = Math.floor(Math.random() * size)
+    ;[mostlyOrderedData[idx1], mostlyOrderedData[idx2]] = [mostlyOrderedData[idx2], mostlyOrderedData[idx1]]
   }
   return mostlyOrderedData
 }
@@ -38,22 +36,19 @@ const randomNumber = () => {
 }
 
 // Generate datasets
-const datasets = {
-  ordered: [],
-  mostlyOrdered: [],
-  random: []
+const generateDatasets = (sizes) => {
+  const datasets = {}
+  sizes.forEach(size => {
+    datasets[`random_${size}`] = generateRandomData(size)
+    datasets[`ordered_${size}`] = generateOrderedData(size)
+    datasets[`mostlyOrdered_${size}`] = generateMostlyOrderedData(size)
+  })
+  return datasets
 }
 
-const datasetSizes = [100000]
-// const datasetSizes = [100, 1000, 5000, 10000, 50000]//, 100000]
+const datasetSizes = [100, 1000, 5000, 10000, 50000, 100000]
+const datasets = generateDatasets(datasetSizes)
 
-datasetSizes.forEach((size) => {
-  datasets.ordered.push(generateOrderedData(size))
-  datasets.mostlyOrdered.push(generateMostlyOrderedData(size))
-  datasets.random.push(generateRandomData(size))
-})
-
-// Write to JSON file
-fs.writeFileSync('data.json', JSON.stringify(datasets, null, 2))
+fs.writeFileSync('data.json', JSON.stringify(datasets, null, 2), 'utf-8')
 
 console.log('Data generated successfully.')

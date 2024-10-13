@@ -37,11 +37,15 @@ const randomNumber = () => {
 
 // Generate datasets
 const generateDatasets = (sizes) => {
-  const datasets = {}
+  const datasets = {
+    random: [],
+    ordered: [],
+    mostlyOrdered: []
+  }
   sizes.forEach(size => {
-    datasets[`random_${size}`] = generateRandomData(size)
-    datasets[`ordered_${size}`] = generateOrderedData(size)
-    datasets[`mostlyOrdered_${size}`] = generateMostlyOrderedData(size)
+    datasets.random.push(generateRandomData(size))
+    datasets.ordered.push(generateOrderedData(size))
+    datasets.mostlyOrdered.push(generateMostlyOrderedData(size))
   })
   return datasets
 }

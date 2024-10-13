@@ -22,24 +22,23 @@ const algorithms = [
   { name: 'Shellsort', func: shellsort },
   { name: 'Pdqsort', func: pdqsort },
   { name: 'jsDefaultSort', func: jsDefaultSort },
-  // { name: 'Insertionsort', func: insertionsort }, // Uncomment to test O(n^2) algorithms if you have enough patient on big data
-  // { name: 'Bubblesort', func: bubblesort }, // Uncomment to test O(n^2) algorithms if you have enough patient on big data
-  // { name: 'Selectionsort', func: selectionsort }, // Uncomment to test O(n^2) algorithms if you have enough patient on big data
+  // { name: 'Insertionsort', func: insertionsort }, // Uncomment to test O(n^2) algorithms if you have enough patience on big data
+  // { name: 'Bubblesort', func: bubblesort }, // Uncomment to test O(n^2) algorithms if you have enough patience on big data
+  // { name: 'Selectionsort', func: selectionsort }, // Uncomment to test O(n^2) algorithms if you have enough patience on big data
 ]
 
 // Read data from file
 const dataset = JSON.parse(fs.readFileSync('data.json', 'utf8'))
 
-const repetitions = 20 // Number of repetitions for each test
+const repetitions = 1 // Number of repetitions for each test
 
 // Function to measure the execution time of a sorting algorithm
-const measureExecutionTime = (sortFunction, array) => {
-  const actualResult = jsDefaultSort(array)
+const measureExecutionTime = (sortFunction, array, expectedResult) => {
   const startTime = performance.now()
   const result = sortFunction([...array]) // Make a copy of the array to avoid side effects
   const endTime = performance.now()
-  if(!compareArrays(result, actualResult)) {
-    console.log('err:', sortFunction)
+  if (!compareArrays(result, expectedResult)) {
+    console.error(`Error: ${sortFunction.name} did not sort the array correctly`)
   }
   return endTime - startTime
 }
@@ -64,6 +63,7 @@ const performPerformanceTest = (data) => {
     // Loop through each dataset type (ordered, mostlyOrdered, random) for the current length
     datasetTypes.forEach(datasetType => {
       const currentDataset = data[datasetType][i]
+      const expectedResult = jsDefaultSort([...currentDataset]) // Precompute the expected result
       console.log(`\nPerformance test for ${datasetType}`)
 
       const results = {}
@@ -74,7 +74,11 @@ const performPerformanceTest = (data) => {
 
         // Repeat the test multiple times to get an average execution time
         for (let r = 0; r < repetitions; r++) {
-          totalTime += measureExecutionTime(algorithm.func, currentDataset)
+          totalTime += measureExecutionTime(
+            algorithm.func,
+            currentDataset,
+            expectedResult
+          )
         }
 
         // Calculate and store the average execution time
@@ -84,7 +88,9 @@ const performPerformanceTest = (data) => {
 
       // Determine the winner for this dataset
       const winner = Object.keys(results)
-        .reduce((prev, curr) => results[prev] < results[curr] ? prev : curr, 0)
+        .reduce((prev, curr) => results[prev] < results[curr] ? prev : curr,
+          Object.keys(results)[0]
+        )
 
       // Display results for this dataset
       const sortedResults = Object.entries(results)
@@ -109,8 +115,19 @@ const performPerformanceTest = (data) => {
   })
 }
 
+// Function to compare two arrays
 const compareArrays = (a, b) => {
-  return JSON.stringify(a) === JSON.stringify(b)
+  if (a.length !== b.length) {
+    return false
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false
+    }
+  }
+
+  return true
 }
 
 // Perform the performance test

@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 // Generate random data
 const generateRandomData = (size) => {
@@ -22,13 +23,13 @@ function generateOrderedData(size) {
 
 // Generate mostly ordered data
 const generateMostlyOrderedData = (size) => {
-  const mostlyOrderedData = generateOrderedData(size)
+  const _data = generateOrderedData(size)
   for (let i = 0; i < size / 10; i++) {
     const idx1 = Math.floor(Math.random() * size)
     const idx2 = Math.floor(Math.random() * size)
-    ;[mostlyOrderedData[idx1], mostlyOrderedData[idx2]] = [mostlyOrderedData[idx2], mostlyOrderedData[idx1]]
+    ;[_data[idx1], _data[idx2]] = [_data[idx2], _data[idx1]]
   }
-  return mostlyOrderedData
+  return _data
 }
 
 const randomNumber = () => {
@@ -53,6 +54,8 @@ const generateDatasets = (sizes) => {
 const datasetSizes = [100, 1000, 5000, 10000, 50000, 100000]
 const datasets = generateDatasets(datasetSizes)
 
-fs.writeFileSync('data.json', JSON.stringify(datasets, null, 2), 'utf-8')
+// Write datasets to data.json in the root folder
+const outputPath = path.join(__dirname, '..', 'data.json')
+fs.writeFileSync(outputPath, JSON.stringify(datasets, null, 2), 'utf-8')
 
 console.log('Data generated successfully.')

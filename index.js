@@ -1,20 +1,20 @@
 // index.js
-const { performance } = require('perf_hooks')
+import { performance } from 'perf_hooks'
 
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
 
 // Load sorting algorithms
-const timsort = require('./algorithms/timsort')
-const quicksort = require('./algorithms/quicksort')
-const mergesort = require('./algorithms/mergesort')
-const heapsort = require('./algorithms/heapsort')
-const shellsort = require('./algorithms/shellsort')
-const pdqsort = require('./algorithms/pdqsort')
-// const insertionsort = require('./algorithms/insertionsort')
-// const bubblesort = require('./algorithms/bubblesort')
-// const selectionsort = require('./algorithms/selectionsort')
+import timsort from'./algorithms/timsort.js'
+import quicksort from'./algorithms/quicksort.js'
+import mergesort from'./algorithms/mergesort.js'
+import heapsort from'./algorithms/heapsort.js'
+import shellsort from'./algorithms/shellsort.js'
+import pdqsort from'./algorithms/pdqsort.js'
+// import insertionsort from'./algorithms/insertionsort.js'
+// import bubblesort from'./algorithms/bubblesort.js'
+// import selectionsort from'./algorithms/selectionsort.js'
 
 // List of sorting algorithms to test
 const algorithms = [
@@ -37,7 +37,7 @@ const originalSort = Array.prototype.sort
 // Overriding Array.prototype.sort
 Array.prototype.sort = function (...args) {
   const stackInfo = getStackInfo()
-  const nonOrderedArray = [...this][0]
+  const nonOrderedArray = [...this]
 
   // Measure default sort time
   const originalSortStart = performance.now()
@@ -158,4 +158,4 @@ const getStackInfo = () => {
   }
 }
 
-module.exports = {}
+export default {}

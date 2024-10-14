@@ -1,4 +1,3 @@
-// index.js
 import { performance } from 'perf_hooks'
 
 import fs from 'fs'
@@ -39,9 +38,11 @@ Array.prototype.sort = function (...args) {
   const stackInfo = getStackInfo()
   const nonOrderedArray = [...this]
 
+  // Clear logs array just in case
+  logs.length = 0
+
   // Measure default sort time
   const originalSortStart = performance.now()
-  // const originalResult = originalSort.apply([...this], args)
   const originalResult = originalSort.apply([...nonOrderedArray], args)
   const originalSortEnd = performance.now()
   const originalSortTime = originalSortEnd - originalSortStart
@@ -56,7 +57,7 @@ Array.prototype.sort = function (...args) {
   })
 
   // Log the times with additional details
-  if(logs) {
+  if(logs.length > 0) {
     const defaultSortingLog = {
       method: 'Your Sorting Algorithm',
       time: originalSortTime
@@ -68,7 +69,8 @@ Array.prototype.sort = function (...args) {
   return originalResult
 }
 
-// Compare both element if these are not equal, sorting cmoparison is meaningless
+// Compare two array for equality, return if they are equal
+// Otherwise return false, sorting cmoparison is meaningless
 const compare = (arr1, arr2) => {
   if (arr1.length !== arr2.length) {
     return false
@@ -86,7 +88,7 @@ const compare = (arr1, arr2) => {
 // Helper function to log times with detailed information
 const logTimes = (defaultSortingLog, logs, stackInfo) => {
   const homeDirectory = os.homedir()
-  const logDirectory = path.join(homeDirectory, '.betterNodeSorting')
+  const logDirectory = path.join(homeDirectory, '.js-sorting-logs')
   const logFilePath = path.join(logDirectory, 'times.log')
 
   if (!fs.existsSync(logDirectory)) {
@@ -121,7 +123,13 @@ const logTimes = (defaultSortingLog, logs, stackInfo) => {
   }
 
   // Write log entry to the file
-  fs.appendFileSync(logFilePath, JSON.stringify(logEntry, undefined, 2) + '\n')
+  try {
+    fs.appendFileSync(
+      logFilePath, JSON.stringify(logEntry, undefined, 2) + '\n'
+    )
+  } catch (error) {
+    console.error('Error writing to log file:', error)
+  }
 }
 
 const insertSorted = (sortedArr, item) => {
@@ -137,18 +145,37 @@ const insertSorted = (sortedArr, item) => {
 }
 
 // Function to extract stack trace information
+// Only god knows why this is so complicated
 const getStackInfo = () => {
   const stack = new Error().stack.split('\n')
-  // We skip the first three lines to get to the user's call
+  // Skip first three lines to get to the users call
+  // Example caller: "    at testFunction (file:///home/user/ProjectFolder/myFile.js:8:21)"
   const caller = stack[3] || 'Unknown caller'
-  const match = caller.match(/at (.+?) \((.+?):(\d+):(\d+)\)/) ||
-    caller.match(/at (.+?):(\d+):(\d+)/)
 
-  if (match) {
+  // functionMatch[0] = full match
+  // functionMatch[1] = functionName
+  // functionMatch[2] = filePath
+  // functionMatch[3] = lineNumber
+  // functionMatch[4] = columnNumber
+  const functionMatch = /at (.+?) \((.+?):(\d+):(\d+)\)/.exec(caller)
+
+  // directMatch[0] = full match
+  // directMatch[1] = filePath
+  // directMatch[2] = lineNumber
+  // directMatch[3] = columnNumber
+  const directMatch = /at (.+?):(\d+):(\d+)/.exec(caller)
+
+  if (functionMatch) {
     return {
-      functionName: match[1].trim(),
-      fileName: match[2],
-      lineNumber: match[3]
+      functionName: functionMatch[1].trim(),
+      fileName: functionMatch[2],
+      lineNumber: functionMatch[3]
+    }
+  } else if (directMatch) {
+    return {
+      functionName: 'Global scope',
+      fileName: directMatch[1],
+      lineNumber: directMatch[2]
     }
   }
   return {

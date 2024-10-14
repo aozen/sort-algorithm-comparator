@@ -53,7 +53,7 @@ const performPerformanceTest = (data) => {
   })
 
   const datasetTypes = Object.keys(data) // ['ordered', 'mostlyOrdered', 'random']
-  const dataLength = data['ordered'].length // same for mostlyOrdered & random
+  const dataLength = data[datasetTypes[0]].length
 
   // Loop through each dataset length
   for (let i = 0; i < dataLength; i++) {

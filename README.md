@@ -2,6 +2,13 @@
 
 This project provides two main features to help developers evaluate and benchmark sorting algorithms in JavaScript.
 
+---
+
+TL;DR
+
+1. add `import('sorting-benchmark')` to the file that you wanna analyze
+1. check `~/.js-sorting-logs/times.log` file to see results
+
 ## Feature 1: Enhanced Array Sorting
 
 Once the project is integrated into your environment, it modifies the behavior of the native `Array.prototype.sort()` method. Instead of using the default sorting algorithm, your arrays will be sorted using various algorithms. The time taken for each algorithm will be logged into `~/.js-sorting-logs/times.log`, allowing you to track the performance and determine the most efficient algorithm for your use case.
@@ -56,16 +63,16 @@ This will compare multiple sorting algorithms, running each algorithm 20 times (
 
 ### TODO List
 
-[ ] Add repeat into cli parameters `--repeat=20`
-[ ] Add data into cli parameters `--data=path/to/customData.json`
-[ ] Select algorithms to run `--allow=quicksort,timsort`
-[ ] Select algorithms to disable `--disable=quicksort,timsort`
-[ ] Filter max best case complexity `--bc=on2`
-[ ] Filter max worst case complexity `--wc=logn`
-[ ] Filter max average case complexity `--ac=on`
-[ ] Select output file type `--output=json`
-[ ] Add memory usages into log `--with-memory`
-[ ] Filter minimum array length `--minLength=100`
-[ ] Filter maximum array length `--minLength=10000`
-[ ] Allow adjusting the log file location `--log=path/to/logs`
-[ ] Add visual graphs for benchmarking results
+- [ ] Add repeat into cli parameters `--repeat=20`
+- [ ] Add data into cli parameters `--data=path/to/customData.json`
+- [ ] Select algorithms to run `--allow=quicksort,timsort`
+- [ ] Select algorithms to disable `--disable=quicksort,timsort`
+- [ ] Filter max best case complexity `--bc=on2`
+- [ ] Filter max worst case complexity `--wc=logn`
+- [ ] Filter max average case complexity `--ac=on`
+- [ ] Select output file type `--output=json`
+- [ ] Add memory usages into log `--with-memory`
+- [ ] Filter minimum array length `--minLength=100`
+- [ ] Filter maximum array length `--minLength=10000`
+- [ ] Allow adjusting the log file location `--log=path/to/logs`
+- [ ] Add visual graphs for benchmarking results

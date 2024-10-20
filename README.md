@@ -1,4 +1,4 @@
-# Sort Algorithm Comparator
+# Sort Algorithm Comparator (BETA)
 
 This project provides two main features to help developers evaluate and benchmark sorting algorithms in JavaScript.
 
@@ -49,6 +49,10 @@ npm run benchmark
 ```
 
 This will compare multiple sorting algorithms, running each algorithm 20 times (by default) on every array. The benchmark calculates the average execution time and displays the results in the terminal.
+
+### Known Bugs/Errors
+
+1. Only works with numbers. Every custom sorting algorithm sorting strings differently. Send me an email if you wanna help about that topic.
 
 ### TODO List
 
